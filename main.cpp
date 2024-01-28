@@ -38,7 +38,7 @@ int main(int argc, char* argv[]) {
         }
         bubbleSortSelection(sortChoice, genreObj);
         displayMoviesOfGenreType(genreObj);
-        int movieChoice = getUserCharInput();
+        int movieChoice = getUserInput();
         if(movieChoice == genreObj.getNumMoviesInGenre()+1) {
             return 0;
         }
