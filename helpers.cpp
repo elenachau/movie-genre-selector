@@ -14,8 +14,10 @@ int readCSV(Movie* movies, ifstream& ifile){
 
             do{
                 getline(ifile, genreString, ',');
+
+
                 updateStringList(genreString, genres, genreCount);
-            } while(genreString[genreString.size() - 1] != '/"');
+            } while(genreString[genreString.size() - 1] != '\"');
 
             getline(ifile, description, ',');
             getline(ifile, director, ',');
@@ -26,9 +28,7 @@ int readCSV(Movie* movies, ifstream& ifile){
             } while(actorString[actorString.size()-1] != '\"');
 
             getline(ifile, dataRead, ',');
-            cout << dataRead << endl;
             year = stoi(dataRead); //str to int
-            cout << dataRead << endl;
             getline(ifile, dataRead, ',');
             getline(ifile, dataRead, ',');
             rating = stof(dataRead); //str to float
@@ -40,7 +40,7 @@ int readCSV(Movie* movies, ifstream& ifile){
             movies[numMovies-1] = newMovie; //starting index: 0
         }
         else{
-            getline(ifile, dataRead);
+            getline(ifile, dataRead); //skip column names
         }
         actorCount = 0;
         genreCount = 0;
@@ -99,20 +99,20 @@ void displayMovieData(Movie m){
     cout << endl;
     cout << "Year: " << m.getYear() << " Rating: " << m.getRating() << " Meta Score: " << m.getMetaScore() << endl;
     cout << "Description: " << m.getDescription() << endl;
-    cout << "Would you like to select another movie(y/n)?  " << endl;
+    cout << endl << "Would you like to select another movie(y/n)?  " << endl;
 }
 
-void displayMoviesOfGenreType(Genre g, int sortType){
+void displayMoviesOfGenreType(Genre g){
     cout << endl;
     for(int i = 0; i < g.getNumMoviesInGenre(); i++) {
-        cout << i+1 << "." << g.getMoviesofGenre()[i].getTitle();
+        cout << i+1 << ". " << g.getMoviesofGenre()[i].getTitle() << " ";
     }
     cout << g.getNumMoviesInGenre()+1 << ". Exit" << endl;
     cout << "======================" <<endl;
     cout << "Select a movie: ";
 }
 
-Genre constructGenre(Movie* movies, int numMovies, string genre){
+Genre constructGenre(Movie* movies, int numMovies, string genre){ //copy of movies array address; copy constructor
     int num = 0;
     Movie genreMovies[250];
 
@@ -132,6 +132,15 @@ int getUserInput(){
     int num;
     cin >> num;
     return num;
+
+    //if userInput is a str
+    // string user;
+    // cin >> user;
+    // try {
+    //     userIn=stoi(user);
+    // } catch (invalid_argument){
+    //     cout << endl << "Invalid data type entry. Enter an interger value with no spaces." << endl;
+    // }
 }
 
 char getUserCharInput(){
@@ -194,6 +203,19 @@ string getLast(string s) {
             spaceFound = true;
         }
     }
+    
+
+    // string extractLastName(string name) {
+    //     size_t pog = fullName.find_last_of(' '); 
+    //     //size_t is an unsigned int (non-negative including 0)
+    //     //.find_last_of returns index of ' '
+    //     if (pog != string::npos) { //std::string::npos means not found
+    //         return fullName.substr(pog + 1); //.substr
+    //     }
+    //     else {
+    //         return fullName;
+    //     }
+    // }
 
     return last;
 }
@@ -235,6 +257,64 @@ void bubbleSortSelection(int c, Genre& genre){
         }
     }
 }
+
+// void bubbleSortSelection(int userSortChoice, Genre& genreObject) {
+//     Movie temp;
+//     string A, B;
+//     for(int i = 0; i < genreObject.getNumMoviesInGenre(); i++) {
+//         for(int j = 0; j < genreObject.getNumMoviesInGenre(); j++){
+//             switch(userSortChoice){
+//                 case 1: //alphabetically by title
+//                     if(genreObject.getMoviesOfGenre()[i].getTitle() < genreObject.getMoviesOfGenre()[j].getTitle()) { 
+//                         temp = genreObject.getMoviesOfGenre()[i];
+//                         genreObject.getMoviesOfGenre()[i] = genreObject.getMoviesOfGenre()[j];
+//                         genreObject.getMoviesOfGenre()[j] = temp;
+                        
+//                     }
+//                     break;
+//                 case 2: //alphabetically by director last name
+//                     A = genreObject.getMoviesOfGenre()[j].getDirector();
+//                     A = extractLastName(A);
+//                     A = toLowerCase(A);
+//                     B = genreObject.getMoviesOfGenre()[j+1].getDirector();
+//                     B = extractLastName(B);
+//                     B = toLowerCase(B);
+//                     if(A>B) { 
+//                         temp = genreObject.getMoviesOfGenre()[j];
+//                         genreObject.getMoviesOfGenre()[j]=genreObject.getMoviesOfGenre()[j+1];
+//                         genreObject.getMoviesOfGenre()[j+1]=temp;
+                        
+//                     }
+//                     break;
+//                 case 3: //numerically by year, least to greatest
+//                     if(genreObject.getMoviesOfGenre()[i].getYear()<genreObject.getMoviesOfGenre()[j].getYear()||(genreObject.getMoviesOfGenre()[i].getYear()==genreObject.getMoviesOfGenre()[j].getYear()&&(genreObject.getMoviesOfGenre()[i].getTitle()<genreObject.getMoviesOfGenre()[j].getTitle()))){ 
+//                         temp = genreObject.getMoviesOfGenre()[i];
+//                         genreObject.getMoviesOfGenre()[i] = genreObject.getMoviesOfGenre()[j];
+//                         genreObject.getMoviesOfGenre()[j] = temp;
+                        
+//                     }
+//                     break;
+//                 case 4: //numerically by rating, greatest to least
+//                     if(genreObject.getMoviesOfGenre()[j].getRating()<genreObject.getMoviesOfGenre()[j+1].getRating()||(genreObject.getMoviesOfGenre()[j].getRating()==genreObject.getMoviesOfGenre()[j+1].getRating()&&(genreObject.getMoviesOfGenre()[j].getTitle()>genreObject.getMoviesOfGenre()[j+1].getTitle()))){ 
+//                         temp = genreObject.getMoviesOfGenre()[j];
+//                         genreObject.getMoviesOfGenre()[j] = genreObject.getMoviesOfGenre()[j+1];
+//                         genreObject.getMoviesOfGenre()[j+1] = temp;
+//                     }
+//                     break;
+//                 case 5: //numerically by metaScore, greatest to least
+//                     if(genreObject.getMoviesOfGenre()[j].getMetaScore()<genreObject.getMoviesOfGenre()[j+1].getMetaScore()||(genreObject.getMoviesOfGenre()[j].getMetaScore()==genreObject.getMoviesOfGenre()[j+1].getMetaScore()&&(genreObject.getMoviesOfGenre()[j].getTitle()>genreObject.getMoviesOfGenre()[j+1].getTitle()))){ 
+//                         temp = genreObject.getMoviesOfGenre()[j];
+//                         genreObject.getMoviesOfGenre()[j] = genreObject.getMoviesOfGenre()[j+1];
+//                         genreObject.getMoviesOfGenre()[j+1] = temp;
+//                     }
+//                     break;
+//                 default:
+//                     displayInvalidInput();
+//             }
+//         }
+//     }
+
+// }
 
 void displaySortMenu(string genre){
     cout << endl;
