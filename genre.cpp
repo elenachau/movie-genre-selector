@@ -11,6 +11,14 @@ Genre::Genre(string g, Movie* m, int n){
     for(int i = 0; i < n; i++){
         moviesOfGenre[i] = m[i];
     }
+
+    // Genre::Genre(std::string genreOfObject, Movie* moviesOfGenre, int numMoviesInGenre){
+    //     this->genreOfObject = genreOfObject; //"this" for clarity when same variable names exist
+    //     for(int index = 0; index < numMoviesInGenre; index++){
+    //         this->moviesOfGenre[index] = moviesOfGenre[index];
+    //     }
+    //     this->numMoviesInGenre = numMoviesInGenre;
+    // }
 }
 
 Genre::Genre(const Genre& rhs){
