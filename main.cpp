@@ -21,11 +21,13 @@ int main(int argc, char* argv[]) {
     ifile.close();
     numMovies--;
     do{
+        system("clear"); //clears terminal
         displayGenreMenu();
         int userChoice = getUserInput();
         if(userChoice == 9) {
             return 0;
         }
+        system("clear");
 
         string genreChosen = performGenreSelection(userChoice);
         Genre genreObj = constructGenre(movies, numMovies, genreChosen);
