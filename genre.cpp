@@ -37,6 +37,15 @@ void Genre::setGenreOfObject(string g){
 void Genre::addMovieToGenre(Movie m){
     moviesOfGenre[numMoviesInGenre] = m;
     numMoviesInGenre++;
+
+    //alt
+    // if(numMoviesInGenre < 500) {
+    //     moviesOfGenre[numMoviesInGenre] = m;
+    //     numMoviesInGenre++;
+    // }
+    // else {
+    //     cout << "Exceeded size of array." << endl;
+    // }
 }
 
 
@@ -53,7 +62,15 @@ int Genre::getNumMoviesInGenre(){
 }
 
 void Genre::swapMovies(int i, int j){ //indices i and j
+    //Movie temp(moviesOfGenre[i]);
     Movie temp = moviesOfGenre[i];
     moviesOfGenre[i] = moviesOfGenre[j];
     moviesOfGenre[j] = temp;
+}
+
+//add-on
+void Genre::displayMovies(){
+    for(int i = 0; i < numMoviesInGenre; i++){
+        cout << i+1 << ". " << moviesOfGenre[i].getTitle() << endl;
+    }
 }
