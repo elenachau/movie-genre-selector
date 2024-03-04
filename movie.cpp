@@ -62,7 +62,27 @@ void Movie::setDescription(string desc){
 
 void Movie::addGenre(string genre) {
     genres[genreCount] = genre;
+
+    //alt
+    // if(genreCount < 500) {
+    //     genres[genreCount] = genre;
+    //     genreCount++;
+    // }
+    // else {
+    //     cout << "Exceeded size of array." << endl;
+    // }
 }
+
+void Movie::addActor(string actor) {
+    if(actorCount < 5) {
+        actors[actorCount] = actor;
+        actorCount++;
+    }
+    else {
+        cout << "Exceeded size of array." << endl;
+    }
+}
+
 void Movie::setYear(int y) {
     year = y;
 }
@@ -112,4 +132,16 @@ int Movie::getGenreCount() {
 
 float Movie::getRating() {
     return rating;
+}
+
+void Movie::displayMovieData(){
+    cout << title << endl;
+    cout << "Director: " << director << endl;
+    cout << "Actors: ";
+    for(int i = 0; i < actorCount - 1; i++){
+        cout << actors[i] << " * ";
+    }
+    cout << actors[actorCount - 1] << endl;
+    cout << "Year: " << year << " Rating: " << rating << " Meta Score: " << metaScore << endl;
+    cout << "Description: " << description << endl;
 }
