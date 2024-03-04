@@ -21,6 +21,8 @@ class Genre{
         int getNumMoviesInGenre();
         void swapMovies(int, int);
 
+        void displayMovies(); //add-on
+
 };
 
 #endif
