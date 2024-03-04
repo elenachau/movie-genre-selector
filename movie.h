@@ -20,6 +20,7 @@ class Movie{
         void setDirector(string);
         void setDescription(string);
         void addGenre(string);
+        void addActor(string); //add-on
         void setYear(int);
         void setMetaScore(int);
         void setRating(float);
@@ -34,6 +35,8 @@ class Movie{
         int getActorCount();
         int getGenreCount();
         float getRating();
+
+        void displayMovieData(); //add-on
 
 };
 
