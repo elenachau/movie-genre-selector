@@ -46,7 +46,53 @@ int readCSV(Movie* movies, ifstream& ifile){
         genreCount = 0;
         numMovies++;
     } 
-    return numMovies--;
+    return numMovies;
+}
+
+//alt implementation of readCSV
+int readFile(ifstream& file, Movie* movies) {
+    int count = 0;
+
+    string junk;
+    getline(file, junk);
+
+    while(!file.eof()) {
+        getline(file, junk, ',');
+        string title, genre, description, director, actor, yearStr, metascoreStr, ratingStr;
+        string genreAr[5], actorAr[5];
+        int genreCount = 0, actorCount = 0;
+
+        getline(file, title, ',');
+        getline(file, junk, '"');
+        do{
+            getline(file, genreAr[genreCount], ',');
+            genreCount++;
+        }while(genreAr[genreCount-1][genreAr[genreCount-1].length() - 1] != '"');
+        genreAr[genreCount-1].pop_back();
+        getline(file, description, ',');
+        getline(file, director, ',');
+        getline(file, junk, '"');
+        do{
+            getline(file, actorAr[actorCount], ',');
+            actorCount++;
+        }while(actorAr[actorCount-1][actorAr[actorCount-1].length() - 1] != '"');
+        actorAr[actorCount-1].pop_back();
+        getline(file, yearStr, ',');
+        int year = stoi(yearStr);
+        getline(file, junk, ',');
+        getline(file, ratingStr, ',');
+        float rating = stof(ratingStr);
+        getline(file, junk, ',');
+        getline(file, junk, ',');
+        getline(file, metascoreStr, '\n');
+        int metascore = stoi(metascoreStr);
+
+        Movie temp(title, director, description, actorAr, genreAr, year, metascore, rating, actorCount, genreCount);
+        movies[count] = temp;
+        count++;
+    }
+
+    return count;
 }
 
 void updateStringList(string newString, string* arr, int& count){
@@ -105,7 +151,7 @@ void displayMovieData(Movie m){
 void displayMoviesOfGenreType(Genre g){
     cout << endl;
     for(int i = 0; i < g.getNumMoviesInGenre(); i++) {
-        cout << i+1 << ". " << g.getMoviesofGenre()[i].getTitle() << " ";
+        cout << i+1 << ". " << g.getMoviesofGenre()[i].getTitle() << endl;
     }
     cout << g.getNumMoviesInGenre()+1 << ". Exit" << endl;
     cout << "======================" <<endl;
@@ -114,7 +160,7 @@ void displayMoviesOfGenreType(Genre g){
 
 Genre constructGenre(Movie* movies, int numMovies, string genre){ //copy of movies array address; copy constructor
     int num = 0;
-    Movie genreMovies[250];
+    Movie genreMovies[500];
 
     for(int i = 0; i < numMovies; i++) {
         for(int j = 0; j < movies[i].getGenreCount(); j++) {
@@ -132,15 +178,6 @@ int getUserInput(){
     int num;
     cin >> num;
     return num;
-
-    //if userInput is a str
-    // string user;
-    // cin >> user;
-    // try {
-    //     userIn=stoi(user);
-    // } catch (invalid_argument){
-    //     cout << endl << "Invalid data type entry. Enter an interger value with no spaces." << endl;
-    // }
 }
 
 char getUserCharInput(){
@@ -257,6 +294,107 @@ void bubbleSortSelection(int c, Genre& genre){
         }
     }
 }
+
+//alt method
+// void bubbleSortSelection(int userChoice, Genre &genreObject){
+//     int n = genreObject.getNumMoviesInGenre();
+//     bool swapped;
+//     switch(userChoice) {
+//         case 1:
+//             for(int i = 0; i < n-1; i++) {
+//                 swapped = false;
+//                 for(int j = 0; j < n-1-i; j++) {
+//                     if(genreObject.getMoviesOfGenre()[j].getTitle() > genreObject.getMoviesOfGenre()[j+1].getTitle()) {
+//                         genreObject.swapMovies(j, j+1);
+//                         swapped = true;
+//                     }
+//                 }
+//             }
+//             break;
+//         case 2: 
+//             for(int i = 0; i < n-1; i++) {
+//                 swapped = false;
+//                 for(int j = 0; j < n-1-i; j++) {
+//                     if(genreObject.getMoviesOfGenre()[j].getYear() > genreObject.getMoviesOfGenre()[j+1].getYear()) {
+//                         genreObject.swapMovies(j, j+1);
+//                         swapped = true;
+//                     }
+//                     else if(genreObject.getMoviesOfGenre()[j].getYear() == genreObject.getMoviesOfGenre()[j+1].getYear()) {
+//                         if(genreObject.getMoviesOfGenre()[j].getTitle() == genreObject.getMoviesOfGenre()[j+1].getTitle()) {
+//                             genreObject.swapMovies(j, j+1);
+//                             swapped = true;
+//                         }
+//                     }
+//                 }
+//             }
+//             break;
+//         case 3:
+//             for(int i = 0; i < n-1; i++) {
+//                 swapped = false;
+//                 for(int j = 0; j < n-1-i; j++) {
+//                     if(genreObject.getMoviesOfGenre()[j].getRating() > genreObject.getMoviesOfGenre()[j+1].getRating()) {
+//                         genreObject.swapMovies(j, j+1);
+//                         swapped = true;
+//                     }
+//                     else if(genreObject.getMoviesOfGenre()[j].getRating() == genreObject.getMoviesOfGenre()[j+1].getRating()) {
+//                         if(genreObject.getMoviesOfGenre()[j].getTitle() > genreObject.getMoviesOfGenre()[j+1].getTitle()) {
+//                             genreObject.swapMovies(j, j+1);
+//                             swapped = true;
+//                         }
+//                     }
+//                 }
+//             }
+//             break;
+//         default:
+//             cout << "Invalid choice." << endl;
+//             break;
+//     }
+// }
+
+//combine alt/og method
+// void bubbleSortSelection(int userChoice, Genre &genreObject){
+//     int n = genreObject.getNumMoviesInGenre();
+//     bool swapped = false;
+//     for(int i = 0; i < genreObject.getNumMoviesInGenre(); i++) {
+//         for(int j = i+1; j < genreObject.getNumMoviesInGenre(); j++) {
+//             switch(userChoice){
+//                 case 1: //alphabetical sort
+//                     if(genreObject.getMoviesOfGenre()[i].getTitle() > genreObject.getMoviesOfGenre()[j].getTitle()){
+//                         genreObject.swapMovies(i, j);
+//                         swapped = true;
+//                     }
+//                     break;
+//                 case 2: //year sort
+//                     if(genreObject.getMoviesOfGenre()[i].getYear() > genreObject.getMoviesOfGenre()[j].getYear()){
+//                         genreObject.swapMovies(i, j);
+//                         swapped = true;
+//                     }
+//                     else if(genreObject.getMoviesOfGenre()[i].getYear() == genreObject.getMoviesOfGenre()[j].getYear()){
+//                         if(genreObject.getMoviesOfGenre()[i].getTitle() > genreObject.getMoviesOfGenre()[j].getTitle()){
+//                             genreObject.swapMovies(i, j);
+//                             swapped = true;
+//                         }
+//                     }
+//                     break;
+//                 case 3: //rating sort
+//                     if(genreObject.getMoviesOfGenre()[i].getRating() < genreObject.getMoviesOfGenre()[j].getRating()){
+//                         genreObject.swapMovies(i, j);
+//                         swapped = true;
+//                     }
+//                     else if(genreObject.getMoviesOfGenre()[i].getRating() == genreObject.getMoviesOfGenre()[j].getRating()){
+//                         if(genreObject.getMoviesOfGenre()[i].getTitle() > genreObject.getMoviesOfGenre()[j].getTitle()){
+//                             genreObject.swapMovies(i, j);
+//                             swapped = true;
+//                         }
+//                     }
+//                     break;
+//                 default:
+//                     cout << "Invalid choice. Select an option between 1-4";
+//                     break;
+//             }
+//         }
+//     }
+// }
 
 // void bubbleSortSelection(int userSortChoice, Genre& genreObject) {
 //     Movie temp;
