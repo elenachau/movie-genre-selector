@@ -320,7 +320,7 @@ void bubbleSortSelection(int c, Genre& genre){
 //                         swapped = true;
 //                     }
 //                     else if(genreObject.getMoviesOfGenre()[j].getYear() == genreObject.getMoviesOfGenre()[j+1].getYear()) {
-//                         if(genreObject.getMoviesOfGenre()[j].getTitle() == genreObject.getMoviesOfGenre()[j+1].getTitle()) {
+//                         if(genreObject.getMoviesOfGenre()[j].getTitle() > genreObject.getMoviesOfGenre()[j+1].getTitle()) {
 //                             genreObject.swapMovies(j, j+1);
 //                             swapped = true;
 //                         }
